@@ -4,14 +4,13 @@ organization := "org.sazabi"
 
 version := "0.0.1-SNAPSHOT"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.7"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.10.4")
+crossScalaVersions := Seq(scalaVersion.value, "2.10.5")
 
 libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
-  "org.scalacheck" %% "scalacheck" % "1.11.5" % "test")
+  "org.scalatest" %% "scalatest" % "2.2.5" % "test")
 
 incOptions := incOptions.value.withNameHashing(true)
 
@@ -20,12 +19,6 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-feature",
   "-language:experimental.macros")
-
-unmanagedSourceDirectories in Compile <+= (scalaVersion, sourceDirectory in Compile) {
-  (v, dir) =>
-    if (v.startsWith("2.10")) dir / "scala210"
-    else dir / "scala211"
-}
 
 publishMavenStyle := true
 
