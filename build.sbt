@@ -2,8 +2,6 @@ name := "regexmacro"
 
 organization := "org.sazabi"
 
-version := "0.0.1-SNAPSHOT"
-
 scalaVersion := "2.11.7"
 
 crossScalaVersions := Seq(scalaVersion.value, "2.10.5")
@@ -19,6 +17,8 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-feature",
   "-language:experimental.macros")
+
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
 
 publishMavenStyle := true
 
