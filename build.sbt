@@ -2,23 +2,43 @@ name := "regexmacro"
 
 organization := "org.sazabi"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.10.5")
+crossScalaVersions := Seq(scalaVersion.value, "2.10.6")
 
 libraryDependencies ++= Seq(
-  "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-  "org.scalatest" %% "scalatest" % "2.2.5" % "test")
+  "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided",
+  "org.typelevel" %% "macro-compat" % "1.1.1",
+  "org.scalatest" %% "scalatest" % "2.2.6" % "test",
+  compilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+)
+
+libraryDependencies ++= {
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, major)) if major >= 11 => Seq(
+      "org.scala-lang.modules" %% "scala-java8-compat" % "0.7.0")
+
+    case Some((2, 10)) => Seq(
+      "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
+      "org.scalamacros" %% "quasiquotes" % "2.1.0")
+  }
+}
 
 incOptions := incOptions.value.withNameHashing(true)
+updateOptions := updateOptions.value.withCachedResolution(true)
 
-scalacOptions ++= Seq(
-  "-unchecked",
-  "-deprecation",
-  "-feature",
-  "-language:experimental.macros")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+
+scalacOptions ++= {
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, major)) if major >= 11 =>
+      Seq("-Ybackend:GenBCode", "-Ydelambdafy:method", "-target:jvm-1.8")
+    case _ => Seq.empty
+  }
+}
 
 releasePublishArtifactsAction := PgpKeys.publishSigned.value
+releaseCrossBuild := true
 
 publishMavenStyle := true
 
