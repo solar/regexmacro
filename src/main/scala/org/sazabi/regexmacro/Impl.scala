@@ -4,9 +4,6 @@ import java.util.regex.Pattern
 import scala.language.experimental.macros
 import scala.reflect.macros.whitebox
 
-import macrocompat.bundle
-
-@bundle
 class Impl(val c: whitebox.Context) {
   import c.universe._
 
